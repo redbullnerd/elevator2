@@ -33,6 +33,7 @@ func (elevinf *Elevatorinfo) ExternalOrderMaster (communicator network.CommChann
 		checker, pos1, pos2, order_int:= 0, 0, 0, 0
 		var message string
 		var my_cost int
+		time.Sleep(1*time.Millisecond)
 		for { // Checking for "own" external orders
 			for i := 0; i < 4; i++ {
 				for j := 0; j < 2; j++ {
@@ -49,9 +50,12 @@ func (elevinf *Elevatorinfo) ExternalOrderMaster (communicator network.CommChann
 					}
 				}
 			}
+			time.Sleep(1*time.Millisecond)
 			if checker == 1  { // External order detected!
 				order_int, message = OrderPacker(pos1,pos2)
+				time.Sleep(1*time.Millisecond)
 				my_cost = elevinf.MyCost(order_int)
+				time.Sleep(1*time.Millisecond)
 			//	convCost := strconv
 				
 				sendToAll <- message
@@ -82,10 +86,12 @@ func (elevinf *Elevatorinfo) ExternalOrderMaster (communicator network.CommChann
 						currentBestIP = ip
 					}
 				}
-				
+				time.Sleep(1*time.Millisecond)
 				if currentBestIP == "Handle self" {
 					// handle self and send nogo to everyone else
+					fmt.Printf("GIVING TO MYSELF\n")
 					elevinf.internal_orders[pos1][pos2] = 1
+					time.Sleep(1*time.Millisecond)
 					for ip, _ := range(costMap) {
 						noGochan <- ip
 					}
@@ -99,6 +105,7 @@ func (elevinf *Elevatorinfo) ExternalOrderMaster (communicator network.CommChann
 					}
 				}
 				elevinf.external_orders[pos1][pos2] = -1
+				time.Sleep(1*time.Millisecond)
 			}
 			checker = 0
 			pos1 = 0
@@ -110,6 +117,7 @@ func (elevinf *Elevatorinfo) ExternalOrderMaster (communicator network.CommChann
 
 func (elevinf *Elevatorinfo) ExternalOrderSlave () {
 	for {
+		time.Sleep(1*time.Millisecond)
 		receiver := <- incExternal
 		ip := receiver.IP
 		message := receiver.Content
@@ -119,16 +127,19 @@ func (elevinf *Elevatorinfo) ExternalOrderSlave () {
 		my_cost := elevinf.MyCost(pos1)
 		
 		cost := strconv.Itoa(my_cost)
-		
+		time.Sleep(1*time.Millisecond)
 		
 		decoded := network.DecodedMessage{ip, cost}
 		
 		sendToOne <- decoded
-		
+		time.Sleep(1*time.Millisecond)
 		select {
 			case <- receivedGochan:
+				time.Sleep(1*time.Millisecond)
+				fmt.Printf("GIVINF ORDER\n")
 				elevinf.internal_orders[pos1][pos2] = 1
 			case <- receivedNoGochan:
+				time.Sleep(1*time.Millisecond)
 				elevinf.external_orders[pos1][pos2] = -1
 			default:
 				time.Sleep(time.Millisecond)
@@ -146,7 +157,7 @@ func (elevinf *Elevatorinfo) ExternalOrderTimer () {
 				if elevinf.external_orders[i][j] == -1 {
 					pos1,pos2 := i,j
 					checker := true
-					for k := 0; k < 12; k++ {
+					for k := 0; k < 4; k++ {
 						if elevinf.external_orders[pos1][pos2] == 0 {
 							i,j = 4,3
 							checker = false
@@ -154,12 +165,15 @@ func (elevinf *Elevatorinfo) ExternalOrderTimer () {
 						time.Sleep(time.Second)
 					}
 					if checker {
+						fmt.Printf("ORDER RESET\n")
 						elevinf.external_orders[pos1][pos2] = 1
 					}
 				}
 				fmt.Printf("EOT 1\n")
 			}
-		}	
+			time.Sleep(1*time.Millisecond)
+		}
+		time.Sleep(1*time.Millisecond)	
 	}
 }
 
@@ -170,6 +184,7 @@ func ExternalSendDelete (pos1 int, pos2 int) {
 
 func (elevinf *Elevatorinfo) ExternalRecvDelete (){
 	for{
+		time.Sleep(1*time.Millisecond)
 		fmt.Printf("ERD 1\n")
 		receiver := <- receiveDeletion
 		floor, button := DeletionUnpacker(receiver)

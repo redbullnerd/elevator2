@@ -4,7 +4,7 @@
 package elevator
 
 import "elevdriver"
-import "fmt"
+// import "fmt"
 import "time"
 
 func (elevinf *Elevatorinfo) CheckLights (){  // Updates lights according to the order_arrays!
@@ -30,7 +30,6 @@ func (elevinf *Elevatorinfo) CheckLights (){  // Updates lights according to the
 				elevdriver.ClearLight(i+1, 0)
 			}
 		}
-		fmt.Printf("checkedlights\n")
 		// time.Sleep(100*time.Millisecond)
 	// }
 }

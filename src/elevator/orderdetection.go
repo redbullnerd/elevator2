@@ -18,12 +18,14 @@ func (elevinf *Elevatorinfo) ReceiveOrders (){
 			for i := 1; i < 4; i++ { // First column of the order slice refers to UP buttons
 				if i == floorbutton && directionbutton == 1 {
 					//elevinf.internal_orders[i-1][0] = 1
+					fmt.Printf("Someone wants up...\n")
 					elevinf.external_orders[i-1][0] = 1
 				}
 			}
 			for i := 2; i < 5; i++ { // Second column of the order slice refers to DOWN buttons
 				if i == floorbutton && directionbutton == 2 {
 					//elevinf.internal_orders[i-1][1] = 1
+					fmt.Printf("Someone wants down...\n")
 					elevinf.external_orders[i-1][1] = 1
 				}
 			}
@@ -41,7 +43,6 @@ func (elevinf *Elevatorinfo) ReceiveOrders (){
 		
 		floorbutton = 0
 		directionbutton = 0
-		fmt.Printf("recievedorder\n")
 		// time.Sleep(1*time.Millisecond)
 	// }
 }

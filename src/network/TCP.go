@@ -123,7 +123,7 @@ func sendTCP(communicator CommChannels){
 			if len(TCPmap) == 0 {
 				fmt.Println("Unable to send to all: there are no active connections")
 			} else {
-				for ip := range TCPmap {
+				for ip, _ := range TCPmap {
 					socket := TCPmap[ip]
 					socket.SetWriteDeadline(time.Now().Add(300*time.Millisecond))
 					_, err := socket.Write(message.Content)
