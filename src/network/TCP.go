@@ -32,6 +32,9 @@ func TCPHandler(communicator CommChannels) {
 func mapOverseer() {
 	TCPmap := make(map[string]net.Conn)
 	for {
+		for ip, _ := range TCPmap {
+			fmt.Println(TCPmap[ip])
+		}
 		select {
 		case newMapEntry := <- internal.updateTCPmap: // new entry detected
 			_, exists := TCPmap[newMapEntry.IP]
@@ -117,7 +120,6 @@ func sendTCP(communicator CommChannels){
 	for { // communication is done over channels, so function should never return
 		select {
 		case message := <- internal.encodedMessageSendAll:
-			fmt.Println("Sending message to all")
 			internal.giveMeCurrentMap <- true
 			TCPmap := <- internal.getCurrentMap
 			if len(TCPmap) == 0 {
@@ -129,8 +131,6 @@ func sendTCP(communicator CommChannels){
 					_, err := socket.Write(message.Content)
 					if err != nil {
 						fmt.Println("error sending on all TCP conns: ", err)
-					} else {
-						fmt.Println("message successfully sent to %s", ip)
 					}
 				}
 			}

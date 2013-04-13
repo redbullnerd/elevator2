@@ -64,8 +64,6 @@ func sendImAlive() {
 			_, err := isalivesocket.Write(isAliveMessage)
 			if err != nil {
 				fmt.Println("Write error in sendImAlive: ", err)
-			} else {
-				fmt.Println("I'm alive message sent")
 			}
 			time.Sleep(sleepduration * time.Millisecond)
 		}
@@ -98,8 +96,6 @@ func listenImAlive() {
 				break
 			}
 			if localIP != senderAddr.IP.String(){
-				fmt.Println("ImAlive message received")
-			
 				if err != nil {
 					fmt.Println("read error in listenImAlive")
 				} else {

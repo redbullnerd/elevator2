@@ -37,7 +37,7 @@ func messageHandler(communicator CommChannels) { // makes right format for incom
 				internal.encodedMessageSendAll <- final
 			}
 		case outgoing := <- communicator.SendToOne:
-			encoded, err := json.Marshal(outgoing.Content)	
+			encoded, err := json.Marshal(outgoing.Content)
 			if err != nil {
 				fmt.Println("FATAL ERROR: encoding before sending to one FAILED: ", outgoing.IP)
 			} else {

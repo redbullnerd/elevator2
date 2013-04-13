@@ -17,13 +17,13 @@ func main() {
 
 	for {
 		sendTESTmail(communicator)
-		time.Sleep(400*time.Millisecond)
+		time.Sleep(1000*time.Millisecond)
 	}
 }
 
 func sendTESTmail(communicator network.CommChannels) {
-	testvar := "Will this arrive?"
-	randomstruct := network.DecodedMessage{"null", testvar}
+	testvar := "DAMN THIS"
+	randomstruct := network.DecodedMessage{"129.241.187.144", testvar}
 	communicator.SendToAll <- randomstruct
 }
 
