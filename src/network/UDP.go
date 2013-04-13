@@ -16,9 +16,13 @@ func UDPHandler(communicator CommChannels) { //goroutine that keeps track of who
 	for{
 		select{
 		case ip := <- internal.isAlivechan:
-				fmt.Println("alivemsg received from: ", ip)
+			_, exists := aliveMap[ip]
+			if exists {
 				aliveMap[ip] = time.Now()
-				internal.newIPchan <- ip // kinda spam, but it works
+			} else	{			
+			aliveMap[ip] = time.Now()
+			internal.newIPchan <- ip
+			}
 		case <- time.After(30*time.Millisecond):
 			for ip, lasttime := range aliveMap {
 				if time.Now().After(lasttime.Add(toleratedLosses * sleepduration * time.Millisecond)) {

@@ -43,7 +43,6 @@ func mapOverseer() {
 				fmt.Println("IP already exists in TCPmap. Won't do anything")
 			}
 		case deadIP := <- internal.isDeadchan: // someone stopped transmitting UDP, and needs to be removed from map
-			fmt.Println("YOU SHOULD BE HERE. YOU'RE IN THE RIGHT PLACE!")
 			delete(TCPmap, deadIP)
 			// NEED TO STOP RECEIVING ON CONNECTION WITH THIS IP
 
