@@ -23,6 +23,7 @@ func (elevinf *Elevatorinfo) Initiate (){
 func (elevinf *Elevatorinfo) DetermineDirection ()(int){ // The elevators "brain", choosing which way to go depending on direction and orders
 	
 	current_floor := elevdriver.GetFloor()
+	last_dir := elevinf.last_direction - 1
 	orders_over := 0
 	orders_under := 0 
 	orders_at_current := 0
@@ -40,7 +41,7 @@ func (elevinf *Elevatorinfo) DetermineDirection ()(int){ // The elevators "brain
 		}
 	}
 	
-	if orders_at_current > 0 {
+	if orders_at_current > 0 && (elevinf.internal_orders[current_floor-1][2] == 1  || elevinf.external_orders[current_floor-1][last_dir] == 1){
 		fmt.Printf("Stay at floor\n")
 		return -2 //Stay at floor
 	} else if (orders_under > 0 && elevinf.last_direction == 2) || (orders_under > 0 && orders_over == 0) {

@@ -200,7 +200,6 @@ func (elevinf *Elevatorinfo) statemachineOpendoor() {
 					elevinf.state = EMERGENCY
 					break
 				}
-				fmt.Printf("%d\n",i)
 				elevinf.ReceiveOrders()
 				elevinf.CheckLights()
 				if elevdriver.GetObs() == true {
