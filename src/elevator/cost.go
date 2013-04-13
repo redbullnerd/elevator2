@@ -1,10 +1,10 @@
-//-----------------------------------------------------------------------------------------//
-//                                          COST                                           //
-//-----------------------------------------------------------------------------------------//
+
+// Gruppe12, Knut Hvamb & Christopher Benjamin Westlye, NTNU spring 2013
+
 package elevator
 
 func (elevinf *Elevatorinfo) MyCost (ordered_floor int) (cost int){
-	// ordered_floor is int from the decoder, makes it easier
+	// Because of package and unpackage, ordered_fllor is an int representing both wanted floor and direction
 	my_cost := 0
 	for i := 0; i < 4; i++ {
 		for j := 0; j < 3; j++ {
@@ -43,5 +43,7 @@ func (elevinf *Elevatorinfo) MyCost (ordered_floor int) (cost int){
 	if elevinf.state == EMERGENCY {
 		my_cost = my_cost+100
 	}
+	
 	return cost
+	
 }

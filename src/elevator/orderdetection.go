@@ -1,6 +1,6 @@
-//-----------------------------------------------------------------------------------------//
-//                                   ORDERS                                                //
-//-----------------------------------------------------------------------------------------//
+
+// Gruppe12, Knut Hvamb & Christopher Benjamin Westlye, NTNU spring 2013
+
 package elevator
 
 import "elevdriver"
@@ -11,43 +11,39 @@ var floor_button int
 var direction_button int
 		
 func (elevinf *Elevatorinfo) ReceiveOrders (){
-	// for {
-		floorbutton, directionbutton := elevdriver.GetButton()
+
+	floorbutton, directionbutton := elevdriver.GetButton()
 	
-		if elevinf.state != EMERGENCY || (elevinf.state == EMERGENCY || elevinf.event == ORDER) {
-			for i := 1; i < 4; i++ { // First column of the order slice refers to UP buttons
-				if i == floorbutton && directionbutton == 1 {
-					//elevinf.internal_orders[i-1][0] = 1
-					fmt.Printf("Someone wants up...\n")
-					elevinf.external_orders[i-1][0] = 1
-				}
-			}
-			for i := 2; i < 5; i++ { // Second column of the order slice refers to DOWN buttons
-				if i == floorbutton && directionbutton == 2 {
-					//elevinf.internal_orders[i-1][1] = 1
-					fmt.Printf("Someone wants down...\n")
-					elevinf.external_orders[i-1][1] = 1
-				}
-			}
+	// Skal ideelt sett fjerne denne if'en, andre kan ta seg av eksterne ordre...
+	// if elevinf.state != EMERGENCY || (elevinf.state == EMERGENCY || elevinf.event == ORDER) {
+	for i := 1; i < 4; i++ { // First column of the order slice refers to UP buttons
+		if i == floorbutton && directionbutton == 1 {
+			fmt.Printf("Someone wants up...\n")
+			elevinf.external_orders[i-1][0] = 1
 		}
-		for i := 1; i < 5; i++ { // Third column of the order slice refers to COMMAND buttons
-			if i == floorbutton && directionbutton == 0 {
-				elevinf.internal_orders[i-1][2] = 1
-			}
+	}
+	for i := 2; i < 5; i++ { // Second column of the order slice refers to DOWN buttons
+		if i == floorbutton && directionbutton == 2 {
+			fmt.Printf("Someone wants down...\n")
+			elevinf.external_orders[i-1][1] = 1
 		}
-		// Clearing the unused spaces
-		elevinf.internal_orders[3][0] = 0
-		elevinf.internal_orders[0][1] = 0
-		elevinf.external_orders[3][0] = 0
-		elevinf.external_orders[0][1] = 0
-		
-		floorbutton = 0
-		directionbutton = 0
-		// time.Sleep(1*time.Millisecond)
+	}
 	// }
+	for i := 1; i < 5; i++ { // Third column of the order slice refers to COMMAND buttons
+		if i == floorbutton && directionbutton == 0 {
+			elevinf.internal_orders[i-1][2] = 1
+		}
+	}
+	// Clearing the unused spaces
+	elevinf.internal_orders[3][0] = 0
+	elevinf.internal_orders[0][1] = 0
+	elevinf.external_orders[3][0] = 0
+	elevinf.external_orders[0][1] = 0
+
 }
 
 func (elevinf *Elevatorinfo) StopAtCurrentFloor()(int){
+
 	current := elevinf.last_floor
 	fmt.Printf("StopAtCurrentFloor engaging\n")
 	if elevinf.state == ASCENDING {
@@ -118,10 +114,13 @@ func (elevinf *Elevatorinfo) StopAtCurrentFloor()(int){
 			}
 		}
 	}
+	
 	return 0
+	
 }
 
 func (elevinf *Elevatorinfo) DeleteOrders(){
+
 	fmt.Printf("gonna delete...\n")
 	if elevdriver.GetFloor() == 1{
 		for i := 0; i < 3; i++ {
@@ -182,9 +181,11 @@ func (elevinf *Elevatorinfo) DeleteOrders(){
 			go ExternalSendDelete(3,1)
 		}
 	}
+	
 }
 
 func (elevinf *Elevatorinfo) NoOrdersAbove ()bool{
+
 	current := elevinf.last_floor
 	orders_above_current := 0
 		for i := current; i < 4; i++ {
@@ -197,10 +198,13 @@ func (elevinf *Elevatorinfo) NoOrdersAbove ()bool{
 	if orders_above_current == 0 {
 		return true
 	}
+	
 	return false
+	
 }
 
 func (elevinf *Elevatorinfo) NoOrdersBelow ()bool{
+
 	current := elevinf.last_floor
 	orders_below_current := 0
 		for i := 0; i < current-1; i++ {
@@ -213,6 +217,8 @@ func (elevinf *Elevatorinfo) NoOrdersBelow ()bool{
 	if orders_below_current == 0 {
 		return true
 	}
+	
 	return false
+	
 }
 

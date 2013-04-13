@@ -1,6 +1,6 @@
-//-----------------------------------------------------------------------------------------//
-//                                   CONTROLLERFUNCTIONS                                   //
-//-----------------------------------------------------------------------------------------//
+
+// Gruppe12, Knut Hvamb & Christopher Benjamin Westlye, NTNU spring 2013
+
 package elevator
 
 import "elevdriver"

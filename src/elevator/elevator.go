@@ -1,6 +1,6 @@
-//-----------------------------------------------------------------------------------------//
-//                                   ELEVATOR	                                           //
-//-----------------------------------------------------------------------------------------//
+
+// Gruppe12, Knut Hvamb & Christopher Benjamin Westlye, NTNU spring 2013
+
 package elevator
 
 import "fmt"
@@ -68,47 +68,46 @@ func (elevinf *Elevatorinfo) HandleElevator() {
 }
 
 func (elevinf *Elevatorinfo) PrintStatus() {
-	// for {
-		var s1, s2, s3 string
-		switch elevinf.state {
-			case IDLE:
-				s1 = "IDLE"
-			case ASCENDING:
-				s1 = "ASCENDING"
-			case DECENDING:
-				s1 = "DECENDING"
-			case OPEN_DOOR:
-				s1 = "OPEN_DOOR"
-			case EMERGENCY:
-				s1 = "EMERGENCY"
-		}
-		switch elevinf.event {
-			case ORDER:
-				s2 = "ORDER"
-			case STOP:
-				s2 = "STOP"
-			case OBSTRUCTION:
-				s2 = "OBSTRUCTION"
-			case SENSOR:
-				s2 = "SENSOR"
-			case NO_EVENT:
-				s2 = "NO_EVENT"
-		}
-		switch elevinf.last_direction {
-			case NONE:
-				s3 = "NONE"
-			case UP:
-				s3 = "UP"
-			case DOWN:
-				s3 = "DOWN"
-		}
-		fmt.Printf("Elevatorstatus--> State: %s Event: %s LastFloor: %d LastDirection: %s\n",
-					s1, s2, elevinf.last_floor, s3)	
-		// time.Sleep(100*time.Millisecond)
-	// }
+	
+	var s1, s2, s3 string
+	switch elevinf.state {
+		case IDLE:
+			s1 = "IDLE"
+		case ASCENDING:
+			s1 = "ASCENDING"
+		case DECENDING:
+			s1 = "DECENDING"
+		case OPEN_DOOR:
+			s1 = "OPEN_DOOR"
+		case EMERGENCY:
+			s1 = "EMERGENCY"
+	}
+	switch elevinf.event {
+		case ORDER:
+			s2 = "ORDER"
+		case STOP:
+			s2 = "STOP"
+		case OBSTRUCTION:
+			s2 = "OBSTRUCTION"
+		case SENSOR:
+			s2 = "SENSOR"
+		case NO_EVENT:
+			s2 = "NO_EVENT"
+	}
+	switch elevinf.last_direction {
+		case NONE:
+			s3 = "NONE"
+		case UP:
+			s3 = "UP"
+		case DOWN:
+			s3 = "DOWN"
+	}
+	fmt.Printf("Elevatorstatus--> State: %s Event: %s LastFloor: %d LastDirection: %s\n", s1, s2, elevinf.last_floor, s3)	
+		
 }
 
 func (elevinf *Elevatorinfo) PrintOrderArray (){
+
 	for i := 0; i < 4; i++ {
 		for j := 0; i < 3; i++ {
 			value := elevinf.internal_orders[i][j]
@@ -116,6 +115,7 @@ func (elevinf *Elevatorinfo) PrintOrderArray (){
 		}
 		fmt.Printf("\n")
 	}
+	
 }
 
 
