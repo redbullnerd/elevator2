@@ -35,22 +35,26 @@ func (elevinf *Elevatorinfo) DetermineDirection ()(int){ // The elevators "brain
 				orders_over++
 			} else if elevinf.internal_orders[i][j] == 1 && i == current_floor-1 {
 				orders_at_current++
+				fmt.Printf("%dorders, %dfloor, %dbutton\n",orders_at_current,i,j)
 			}	
 		}
 	}
 	
 	if orders_at_current > 0 {
+		fmt.Printf("Stay at floor\n")
 		return -2 //Stay at floor
 	} else if (orders_under > 0 && elevinf.last_direction == 2) || (orders_under > 0 && orders_over == 0) {
+		fmt.Printf("blabla1\n")
 		return -1 //Keep going down
 	} else if (orders_over > 0 && elevinf.last_direction == 1) || (orders_over > 0 && orders_under == 0) {
+		fmt.Printf("blabla1\n")
 		return 1 //Keep going up
 	} else {
+		fmt.Printf("two is returned, do nothing\n")
 		return 2 //No orders, no direction
 	}
 	
-	return 0
-
+	return 2
 } 
 
 func StartMotor(direction int)() {

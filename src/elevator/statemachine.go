@@ -20,7 +20,7 @@ const ( // Giving the states values with iote -> increments from 0
 func (elevinf *Elevatorinfo) BootStatemachine (){ // Called once, prepares elevator for use...
 	fmt.Printf("STATEMACHINE BOOTING...\n")
 	elevinf.last_floor = 0
-	
+
 	elevinf.Initiate()
 	go FloorIndicator()
 	// go elevinf.CheckLights()
@@ -49,6 +49,7 @@ func (elevinf *Elevatorinfo) RunStatemachine(){
 		elevinf.UpdateLastDirection()
 		elevinf.ReceiveOrders()
 		elevinf.CheckLights()
+		elevinf.PrintOrderArray()
 		elevinf.SetEvent()
 		elevinf.PrintStatus()
 		
@@ -64,13 +65,12 @@ func (elevinf *Elevatorinfo) RunStatemachine(){
 			case EMERGENCY:
 				elevinf.statemachineEmergency()
 		}
-		fmt.Printf("ran statemachine\n")
+	fmt.Println(elevinf.state)
 	}
 }
 
 func (elevinf *Elevatorinfo) statemachineIdle() {
 	// for elevinf.state == IDLE {
-		time.Sleep(1*time.Millisecond)
 		switch elevinf.event {
 			case ORDER:
 				if elevinf.DetermineDirection() != 2 && elevdriver.GetFloor() == -1 {
@@ -156,7 +156,6 @@ func (elevinf *Elevatorinfo) statemachineDecending() {
 				}
 			case NO_EVENT:
 		}
-		time.Sleep(1*time.Millisecond)
 	// }
 }
 
@@ -167,7 +166,7 @@ func (elevinf *Elevatorinfo) statemachineOpendoor() {
 				fmt.Printf("The door is open\n")
 				elevdriver.SetDoor()
 				elevinf.DeleteOrders()
-				for i := 0; i < 30; i++{
+				for i := 0; i < 300; i++{
 					if elevdriver.GetFloor() == -1 && elevdriver.GetObs() == false {
 						elevdriver.ClearDoor()
 						elevinf.state = IDLE
@@ -186,6 +185,8 @@ func (elevinf *Elevatorinfo) statemachineOpendoor() {
 					}
 				}
 				elevdriver.ClearDoor()
+				elevinf.DeleteOrders()
+				fmt.Printf("Door cleared\n")
 				if elevinf.DetermineDirection() == -2 {
 					elevinf.state = OPEN_DOOR
 				} else if elevinf.DetermineDirection() == -1 {
@@ -214,9 +215,9 @@ func (elevinf *Elevatorinfo) statemachineOpendoor() {
 						elevinf.state = EMERGENCY
 						break
 					}
+					fmt.Printf("%d\n",i)
 					elevinf.ReceiveOrders()
 					elevinf.CheckLights()
-					time.Sleep(10*time.Millisecond)
 					if elevdriver.GetObs() == true {
 						i = 0
 					}
@@ -282,7 +283,6 @@ func (elevinf *Elevatorinfo) statemachineEmergency() {
 			case SENSOR:
 			case NO_EVENT:
 		}
-		time.Sleep(1*time.Millisecond)
 	// }
 }
 

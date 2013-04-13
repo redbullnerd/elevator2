@@ -108,6 +108,15 @@ func (elevinf *Elevatorinfo) PrintStatus() {
 	// }
 }
 
+func (elevinf *Elevatorinfo) PrintOrderArray (){
+	for i := 0; i < 4; i++ {
+		for j := 0; i < 3; i++ {
+			value := elevinf.internal_orders[i][j]
+			fmt.Printf(" %d  ", value)
+		}
+		fmt.Printf("\n")
+	}
+}
 
 
 

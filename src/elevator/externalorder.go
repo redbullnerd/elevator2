@@ -39,11 +39,9 @@ func (elevinf *Elevatorinfo) ExternalOrderMaster (communicator network.CommChann
 				for j := 0; j < 2; j++ {
 						if elevinf.external_orders[i][j] == 1 {
 							checker++
-							if checker > 0 {
 								pos1 = i
 								pos2 = j
 								break
-							}
 						}
 					if checker > 0 {
 						break
@@ -179,13 +177,14 @@ func (elevinf *Elevatorinfo) ExternalOrderTimer () {
 
 func ExternalSendDelete (pos1 int, pos2 int) {
 	message := DeletionPacker(pos1,pos2)
+	fmt.Printf("sending delete...\n")
 	sendToAll <- message
 }
 
 func (elevinf *Elevatorinfo) ExternalRecvDelete (){
 	for{
 		time.Sleep(1*time.Millisecond)
-		fmt.Printf("ERD 1\n")
+		fmt.Printf("gonna delete...\n")
 		receiver := <- receiveDeletion
 		floor, button := DeletionUnpacker(receiver)
 		elevinf.external_orders[floor][button] = 0

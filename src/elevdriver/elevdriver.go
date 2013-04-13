@@ -75,7 +75,7 @@ func motorHandler() {
 			Clear_bit(MOTORDIR)
 			Write_analog(MOTOR, MAX_SPEED)
 		} else if (newDir == DOWN) {
-			fmt.Printf("Elevator decending...\n")
+			fmt.Printf("Elevator descending...\n")
 			Set_bit(MOTORDIR)
 			Write_analog(MOTOR, MAX_SPEED)
 		} else {

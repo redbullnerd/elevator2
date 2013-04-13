@@ -36,7 +36,7 @@ func (elevinf *Elevatorinfo) CheckLights (){  // Updates lights according to the
 
 func FloorIndicator(){
 	for {
-		if elevdriver.GetFloor()  > 0 { 
+		if elevdriver.GetFloor()  > 0 {
 			elevdriver.SetFloor(elevdriver.GetFloor())
 		}
 		time.Sleep(100*time.Millisecond)
