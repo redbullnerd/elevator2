@@ -16,6 +16,7 @@ func TCPHandler(communicator CommChannels) {
 	for {
 		select {
 		case newIP := <- internal.newIPchan: // new UDP source detected, will connect
+			fmt.Println(newIP)
 			go connectTCP(newIP)
 		case conn := <- internal.startNewReceivechan:
 			go conn.receiveTCP(communicator)
@@ -32,9 +33,6 @@ func TCPHandler(communicator CommChannels) {
 func mapOverseer() {
 	TCPmap := make(map[string]net.Conn)
 	for {
-		for ip, _ := range TCPmap {
-			fmt.Println(ip)
-		}
 		select {
 		case newMapEntry := <- internal.updateTCPmap: // new entry detected
 			_, exists := TCPmap[newMapEntry.IP]
@@ -45,6 +43,7 @@ func mapOverseer() {
 				fmt.Println("IP already exists in TCPmap. Won't do anything")
 			}
 		case deadIP := <- internal.isDeadchan: // someone stopped transmitting UDP, and needs to be removed from map
+			fmt.Println("YOU SHOULD BE HERE. YOU'RE IN THE RIGHT PLACE!")
 			delete(TCPmap, deadIP)
 			// NEED TO STOP RECEIVING ON CONNECTION WITH THIS IP
 

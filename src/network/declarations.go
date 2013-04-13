@@ -8,11 +8,11 @@ import(
 // ALL THIS CHANNEL USE MIGHT BE PRONE TO DEADLOCKS. GOOD IDEA TO IMPLEMENT TIMEOUTS?
 
 const(
-	sleepduration = 1000 //interval between alivemessages given in milliseconds
+	sleepduration = 500 //interval between alivemessages given in milliseconds
 	toleratedLosses = 4
 
 	isAlive = 1
-	dead = 0
+	isDead = 0
 )
 
 var(

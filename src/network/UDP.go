@@ -16,24 +16,17 @@ func UDPHandler(communicator CommChannels) { //goroutine that keeps track of who
 	for{
 		select{
 		case ip := <- internal.isAlivechan:
-			_, inMap := aliveMap[ip]
-			if inMap {
+				fmt.Println("alivemsg received from: ", ip)
 				aliveMap[ip] = time.Now()
-			} else {
-				aliveMap[ip] = time.Now()
-				internal.newIPchan <- ip
-			}
-		case <- time.After(50*time.Millisecond):
+				internal.newIPchan <- ip // kinda spam, but it works
+		case <- time.After(30*time.Millisecond):
 			for ip, lasttime := range aliveMap {
-				if time.Now().After(lasttime.Add(toleratedLosses * sleepduration * time.Millisecond)){
+				if time.Now().After(lasttime.Add(toleratedLosses * sleepduration * time.Millisecond)) {
 					fmt.Println("someone missed UDP deadline, and is terminated from aliveMap")
-					communicator.getDeadIPchan <- ip					
 					internal.isDeadchan <- ip
 					delete(aliveMap, ip)
 				}
 			}
-		case deadIP := <- communicator.sendDeadIPchan:
-			internal.closeConn <- deadIP
 		// elevator pack might want alives to count who will give cost
 		case <- communicator.GiveMeCurrentAlives:
 			communicator.GetCurrentAlives <- aliveMap
@@ -93,7 +86,6 @@ func listenImAlive() {
 			_, senderAddr, err := isalivesocket.ReadFromUDP(data[0:])
 			if err != nil {
 				fmt.Println("ReadFromUDP error in listenImAlive: ", err)
-				break
 			}
 			if localIP != senderAddr.IP.String(){
 				if err != nil {
