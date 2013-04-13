@@ -49,10 +49,16 @@ func mapOverseer() {
 		case <- internal.giveMeCurrentMap: // send function wants full map
 			internal.getCurrentMap <- TCPmap
 		case wantedIP := <- internal.giveMeConn: // if only one connection is wanted
-			internal.getSingleConn <- TCPmap[wantedIP]
+				_, exists := TCPmap[wantedIP]
+				if exists {
+					internal.getSingleConn <- TCPmap[wantedIP]
+				} else {
+					internal.getSingleConn <- nil
+				}
 		}
 	}
 }
+
 
 // OUTPUTS: newMapEntry over UPDATETCPMAP
 func listenTCP(){ // listens for TCP connections 
@@ -137,9 +143,16 @@ func sendTCP(communicator CommChannels){
 			fmt.Println("Sending message to one")
 			internal.giveMeConn <- message.IP
 			socket := <- internal.getSingleConn
-			// NEED ERROR CHECK HERE ASWELL
-			socket.Write(message.Content)
-			fmt.Println("message successfully sent to %s", message.IP)
+			if socket == nil {
+				fmt.Println("Could not send message to one: IP didn't exist in map")
+			} else {
+				_, err := socket.Write(message.Content)
+				if err != nil {
+					fmt.Println("Error writing to socket for this IP:", message.IP)
+				} else {
+					fmt.Println("message successfully sent to: ", message.IP)
+				}
+			}
 		}
 	}
 }

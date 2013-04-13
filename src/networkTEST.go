@@ -22,9 +22,9 @@ func main() {
 }
 
 func sendTESTmail(communicator network.CommChannels) {
-	testvar := "DAMN THIS"
-	randomstruct := network.DecodedMessage{"129.241.187.144", testvar}
-	communicator.SendToAll <- randomstruct
+	testvar := "WE'RE GOING TO FINISH THIS"
+	randomstruct := network.DecodedMessage{"129.241.187.148", testvar}
+	communicator.SendToOne <- randomstruct
 }
 
 func receiveTESTmail(communicator network.CommChannels) {
