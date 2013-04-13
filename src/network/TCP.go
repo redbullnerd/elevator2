@@ -33,7 +33,7 @@ func mapOverseer() {
 	TCPmap := make(map[string]net.Conn)
 	for {
 		for ip, _ := range TCPmap {
-			fmt.Println(TCPmap[ip])
+			fmt.Println(ip)
 		}
 		select {
 		case newMapEntry := <- internal.updateTCPmap: // new entry detected
